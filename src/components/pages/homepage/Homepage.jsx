@@ -1,5 +1,6 @@
-import Form from "../../Form";
-import Header from "../Header";
+import Form from "../../form/Form";
+import Header from "../../header/Header";
+import "./homepage.css";
 
 export default function Homepage() {
   return (

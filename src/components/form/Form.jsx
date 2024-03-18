@@ -1,7 +1,8 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Modal from "./Modal";
+import Modal from "../modal/Modal";
+import "./form.css";
 
 export default function Form() {
   const [selectedOption, setSelectedOption] = useState("");
@@ -35,19 +36,19 @@ export default function Form() {
       )}
       <form onSubmit={handleSubmit} className="create-employee-form">
         <input
-          className="input1"
+          className="input firstname-input"
           type="text"
           name="firstname"
           placeholder="First Name"
         />
         <input
-          className="input2"
+          className="input lastname-input"
           type="text"
           name="lastname"
           placeholder="Last Name"
         />
 
-        <div className="input3">
+        <div className="birthdate-input">
           <DatePicker
             selected={birthDate}
             onChange={(birthDate) => setBirthDate(birthDate)}
@@ -55,22 +56,32 @@ export default function Form() {
           />
         </div>
 
-        <div className="input4">
+        <div className="startdate-input">
           <DatePicker
             selected={startDate}
             onChange={(startDate) => setStartDate(startDate)}
           />
         </div>
 
-        <input className="input5" type="text" name="" placeholder="Street" />
+        <input
+          className="input street-input"
+          type="text"
+          name=""
+          placeholder="Street"
+        />
 
-        <input className="input6" type="text" name="" placeholder="City" />
+        <input
+          className="input city-input"
+          type="text"
+          name=""
+          placeholder="City"
+        />
         <select
           id="state"
           name="state"
           value={selectedState}
           onChange={handleStateChange}
-          className="input7"
+          className="input state-input"
         >
           <option value="">Choose a State</option>
           <option value="alabama">Alabama</option>
@@ -125,14 +136,19 @@ export default function Form() {
           <option value="wyoming">Wyoming</option>
         </select>
 
-        <input className="input8" type="text" name="" placeholder="Zip Code" />
+        <input
+          className="input zipcode-input"
+          type="text"
+          name=""
+          placeholder="Zip Code"
+        />
 
         <select
           id="department"
           name="department"
           value={selectedOption}
           onChange={handleOptionChange}
-          className="input9"
+          className="input department-input"
         >
           <option value="choice">Choose an Option</option>
           <option value="sales">Sales</option>
