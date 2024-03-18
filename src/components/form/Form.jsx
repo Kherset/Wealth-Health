@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from "../modal/Modal";
@@ -7,23 +7,80 @@ import "./form.css";
 export default function Form() {
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedState, setSelectedState] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [birthDate, setBirthDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [birthDate, setBirthDate] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [inputFields, setInputFields] = useState({
+    firstname: "",
+    lastname: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    department: "",
+  });
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const validateValues = (inputValues) => {
+    let errors = {};
+    if (!/^[A-Za-z]{2,}$/.test(inputValues.firstname)) {
+      errors.firstname = "Please enter a valid first name";
+    }
+    if (!/^[A-Za-z]{2,}$/.test(inputValues.lastname)) {
+      errors.lastname = "Please enter a valid last name";
+    }
+    if (inputValues.street.length < 5) {
+      errors.street = "Please enter a valid street address";
+    }
+    if (!inputValues.city || inputValues.city.length < 2) {
+      errors.city = "Please enter a valid city name";
+    }
+    if (!inputValues.state || inputValues.state === "") {
+      errors.state = "Please choose a State";
+    }
+    if (!inputValues.zipcode || !/^\d{5}$/.test(inputValues.zipcode)) {
+      errors.zipcode = "Please enter a valid 5-digit zip code";
+    }
+    if (!inputValues.department || inputValues.department === "") {
+      errors.department = "Please choose a department";
+    }
+    return errors;
   };
 
-  const handleStateChange = (event) => {
-    setSelectedState(event.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputFields({ ...inputFields, [name]: value });
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+    if (name === "firstname" || name === "lastname") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: /^[A-Za-z]{2,}$/.test(value)
+          ? ""
+          : `Please enter a valid ${
+              name === "firstname" ? "first" : "last"
+            } name`,
+      }));
+    }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Ici la logique d'envoi du formulaire
-    setShowModal(true);
+    const validationErrors = validateValues(inputFields);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length === 0) {
+      setSubmitting(true);
+      setShowModal(true);
+      // Ajouter la logique pour soumettre les données
+    }
   };
+
+  useEffect(() => {
+    if (submitting) {
+      // Ajouter la logique de soumission
+      console.log("Form submitted!");
+    }
+  }, [submitting]);
 
   return (
     <main id="form-container">
@@ -35,23 +92,39 @@ export default function Form() {
         />
       )}
       <form onSubmit={handleSubmit} className="create-employee-form">
-        <input
-          className="input firstname-input"
-          type="text"
-          name="firstname"
-          placeholder="First Name"
-        />
-        <input
-          className="input lastname-input"
-          type="text"
-          name="lastname"
-          placeholder="Last Name"
-        />
+        <div className="input-container">
+          <input
+            className={`input firstname-input ${errors.firstname && "error"}`}
+            type="text"
+            name="firstname"
+            placeholder="First Name"
+            value={inputFields.firstname}
+            onChange={handleChange}
+          />
+          {errors.lastname && (
+            <div className="error-message">{errors.firstname}</div>
+          )}
+        </div>
+
+        <div className="input-container">
+          <input
+            className={`input lastname-input ${errors.lastname && "error"}`}
+            type="text"
+            name="lastname"
+            placeholder="Last Name"
+            value={inputFields.lastname}
+            onChange={handleChange}
+          />
+          {errors.lastname && (
+            <p className="error-message">{errors.lastname}</p>
+          )}
+        </div>
 
         <div className="birthdate-input">
           <DatePicker
             selected={birthDate}
-            onChange={(birthDate) => setBirthDate(birthDate)}
+            onChange={setBirthDate}
+            placeholderText="Date of Birth"
             monthYearClassName="customMonthYear"
           />
         </div>
@@ -59,29 +132,44 @@ export default function Form() {
         <div className="startdate-input">
           <DatePicker
             selected={startDate}
-            onChange={(startDate) => setStartDate(startDate)}
+            onChange={setStartDate}
+            placeholderText="Start Date"
           />
         </div>
 
-        <input
-          className="input street-input"
-          type="text"
-          name=""
-          placeholder="Street"
-        />
+        <div className="input-container street-input">
+          <input
+            className={`input street-input ${errors.street && "error"}`}
+            type="text"
+            name="street"
+            placeholder="Street"
+            value={inputFields.street}
+            onChange={handleChange}
+          />
+          {errors.street && <p className="error-message">{errors.street}</p>}
+        </div>
 
-        <input
-          className="input city-input"
-          type="text"
-          name=""
-          placeholder="City"
-        />
+        <div className="input-container city-input">
+          <input
+            className={`input city-input ${errors.city && "error"}`}
+            type="text"
+            name="city"
+            placeholder="City"
+            value={inputFields.city}
+            onChange={handleChange}
+          />
+          {errors.city && <p className="error-message">{errors.city}</p>}
+        </div>
+
         <select
           id="state"
           name="state"
-          value={selectedState}
-          onChange={handleStateChange}
-          className="input state-input"
+          value={inputFields.state}
+          onChange={(e) => {
+            handleChange(e);
+            setSelectedState(e.target.value);
+          }}
+          className={`input state-input ${errors.state && "error"}`}
         >
           <option value="">Choose a State</option>
           <option value="alabama">Alabama</option>
@@ -136,27 +224,41 @@ export default function Form() {
           <option value="wyoming">Wyoming</option>
         </select>
 
-        <input
-          className="input zipcode-input"
-          type="text"
-          name=""
-          placeholder="Zip Code"
-        />
+        <div className="input-container zipcode-input">
+          <input
+            className={`input zipcode-input ${errors.zipcode && "error"}`}
+            type="text"
+            name="zipcode"
+            placeholder="Zip Code"
+            value={inputFields.zipcode}
+            onChange={handleChange}
+          />
+          {errors.zipcode && <p className="error-message">{errors.zipcode}</p>}
+        </div>
 
-        <select
-          id="department"
-          name="department"
-          value={selectedOption}
-          onChange={handleOptionChange}
-          className="input department-input"
-        >
-          <option value="choice">Choose an Option</option>
-          <option value="sales">Sales</option>
-          <option value="marketing">Marketing</option>
-          <option value="engineering">Engineering</option>
-          <option value="human Resources">Human Resources</option>
-          <option value="legal">Legal</option>
-        </select>
+        <div className="input-container department-input">
+          <select
+            id="department"
+            name="department"
+            value={inputFields.department}
+            onChange={(e) => {
+              handleChange(e);
+              setSelectedOption(e.target.value);
+            }}
+            className={`input department-input ${errors.department && "error"}`}
+          >
+            <option value="choice">Choose an Option</option>
+            <option value="sales">Sales</option>
+            <option value="marketing">Marketing</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Human Resources">Human Resources</option>
+            <option value="Legal">Legal</option>
+          </select>
+          {errors.department && (
+            <p className="error-message">{errors.department}</p>
+          )}
+        </div>
+
         <button type="submit" className="new-employee-button">
           Add New Employee
         </button>
