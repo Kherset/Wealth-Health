@@ -1,6 +1,7 @@
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
+import "./modal.css";
 
 export default function Modal({
   onClose,
