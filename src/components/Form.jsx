@@ -1,8 +1,14 @@
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Modal from "./Modal";
 
 export default function Form() {
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedState, setSelectedState] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [birthDate, setBirthDate] = useState(new Date());
+  const [showModal, setShowModal] = useState(false);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -14,12 +20,19 @@ export default function Form() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Effectuez ici la logique d'envoi du formulaire
-    console.log("Formulaire soumis !");
+    // Ici la logique d'envoi du formulaire
+    setShowModal(true);
   };
 
   return (
     <main id="form-container">
+      {showModal && (
+        <Modal
+          onClose={() => setShowModal(false)}
+          modalAnimationStart="modal-fall"
+          modalAnimationEnd="modal-rise"
+        />
+      )}
       <form onSubmit={handleSubmit} className="create-employee-form">
         <input
           className="input1"
@@ -34,18 +47,20 @@ export default function Form() {
           placeholder="Last Name"
         />
 
-        <input
-          className="input3"
-          type="text"
-          name=""
-          placeholder="Start Date"
-        />
-        <input
-          className="input4"
-          type="text"
-          name=""
-          placeholder="Date of Birth"
-        />
+        <div className="input3">
+          <DatePicker
+            selected={birthDate}
+            onChange={(birthDate) => setBirthDate(birthDate)}
+            monthYearClassName="customMonthYear"
+          />
+        </div>
+
+        <div className="input4">
+          <DatePicker
+            selected={startDate}
+            onChange={(startDate) => setStartDate(startDate)}
+          />
+        </div>
 
         <input className="input5" type="text" name="" placeholder="Street" />
 
