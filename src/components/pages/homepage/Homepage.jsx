@@ -1,9 +1,11 @@
-import Title from "../Title";
+import Form from "../../Form";
+import Header from "../Header";
 
 export default function Homepage() {
   return (
     <div id="homepage">
-      <Title children="HRnet" />
+      <Header children="HRnet" />
+      <Form />
     </div>
   );
 }
