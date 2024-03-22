@@ -1,12 +1,5 @@
-import Title from "../title/Title";
-import EmployeesList from "../employees-list-link/EmployeesListLink";
 import "./header.css";
 
-export default function Header({ children }) {
-  return (
-    <header className="header">
-      <Title />
-      <EmployeesList />
-    </header>
-  );
+export default function Header() {
+  return <header className="header">Current Employees</header>;
 }

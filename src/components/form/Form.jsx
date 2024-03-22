@@ -1,84 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from "../modal/Modal";
 import "./form.css";
 
 export default function Form() {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [startDate, setStartDate] = useState(null);
-  const [birthDate, setBirthDate] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
-  const [inputFields, setInputFields] = useState({
-    firstname: "",
-    lastname: "",
-    street: "",
-    city: "",
-    state: "",
-    zipcode: "",
-    department: "",
-  });
-
-  const validateValues = (inputValues) => {
-    let errors = {};
-    if (!/^[A-Za-z]{2,}$/.test(inputValues.firstname)) {
-      errors.firstname = "Please enter a valid first name";
-    }
-    if (!/^[A-Za-z]{2,}$/.test(inputValues.lastname)) {
-      errors.lastname = "Please enter a valid last name";
-    }
-    if (inputValues.street.length < 5) {
-      errors.street = "Please enter a valid street address";
-    }
-    if (!inputValues.city || inputValues.city.length < 2) {
-      errors.city = "Please enter a valid city name";
-    }
-    if (!inputValues.state || inputValues.state === "") {
-      errors.state = "Please choose a State";
-    }
-    if (!inputValues.zipcode || !/^\d{5}$/.test(inputValues.zipcode)) {
-      errors.zipcode = "Please enter a valid 5-digit zip code";
-    }
-    if (!inputValues.department || inputValues.department === "") {
-      errors.department = "Please choose a department";
-    }
-    return errors;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputFields({ ...inputFields, [name]: value });
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-    if (name === "firstname" || name === "lastname") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: /^[A-Za-z]{2,}$/.test(value)
-          ? ""
-          : `Please enter a valid ${
-              name === "firstname" ? "first" : "last"
-            } name`,
-      }));
-    }
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const validationErrors = validateValues(inputFields);
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      setSubmitting(true);
+    setSubmitting(true);
+    // Small delay added to allow the component to load properly.
+    setTimeout(() => {
       setShowModal(true);
-      // Ajouter la logique pour soumettre les données
-    }
+    }, 1);
   };
 
   useEffect(() => {
     if (submitting) {
-      // Ajouter la logique de soumission
-      console.log("Form submitted!");
+      setShowModal(false);
     }
   }, [submitting]);
 
@@ -94,158 +35,119 @@ export default function Form() {
       <form onSubmit={handleSubmit} className="create-employee-form">
         <div className="input-container">
           <input
-            className={`input firstname-input ${errors.firstname && "error"}`}
+            className="input firstname-input"
             type="text"
             name="firstname"
             placeholder="First Name"
-            value={inputFields.firstname}
-            onChange={handleChange}
           />
-          {errors.lastname && (
-            <div className="error-message">{errors.firstname}</div>
-          )}
         </div>
 
         <div className="input-container">
           <input
-            className={`input lastname-input ${errors.lastname && "error"}`}
+            className="input lastname-input"
             type="text"
             name="lastname"
             placeholder="Last Name"
-            value={inputFields.lastname}
-            onChange={handleChange}
           />
-          {errors.lastname && (
-            <p className="error-message">{errors.lastname}</p>
-          )}
         </div>
 
         <div className="birthdate-input">
           <DatePicker
-            selected={birthDate}
-            onChange={setBirthDate}
             placeholderText="Date of Birth"
             monthYearClassName="customMonthYear"
           />
         </div>
 
         <div className="startdate-input">
-          <DatePicker
-            selected={startDate}
-            onChange={setStartDate}
-            placeholderText="Start Date"
-          />
+          <DatePicker placeholderText="Start Date" />
         </div>
 
         <div className="input-container street-input">
           <input
-            className={`input street-input ${errors.street && "error"}`}
+            className="input street-input"
             type="text"
             name="street"
             placeholder="Street"
-            value={inputFields.street}
-            onChange={handleChange}
           />
-          {errors.street && <p className="error-message">{errors.street}</p>}
         </div>
 
         <div className="input-container city-input">
           <input
-            className={`input city-input ${errors.city && "error"}`}
+            className="input city-input"
             type="text"
             name="city"
             placeholder="City"
-            value={inputFields.city}
-            onChange={handleChange}
           />
-          {errors.city && <p className="error-message">{errors.city}</p>}
         </div>
 
-        <select
-          id="state"
-          name="state"
-          value={inputFields.state}
-          onChange={(e) => {
-            handleChange(e);
-            setSelectedState(e.target.value);
-          }}
-          className={`input state-input ${errors.state && "error"}`}
-        >
-          <option value="">Choose a State</option>
-          <option value="alabama">Alabama</option>
-          <option value="alaska">Alaska</option>
-          <option value="arizona">Arizona</option>
-          <option value="arkansas">Arkansas</option>
-          <option value="california">California</option>
-          <option value="colorado">Colorado</option>
-          <option value="connecticut">Connecticut</option>
-          <option value="delaware">Delaware</option>
-          <option value="florida">Florida</option>
-          <option value="georgia">Georgia</option>
-          <option value="hawaii">Hawaii</option>
-          <option value="idaho">Idaho</option>
-          <option value="illinois">Illinois</option>
-          <option value="indiana">Indiana</option>
-          <option value="iowa">Iowa</option>
-          <option value="kansas">Kansas</option>
-          <option value="kentucky">Kentucky</option>
-          <option value="louisiana">Louisiana</option>
-          <option value="maine">Maine</option>
-          <option value="maryland">Maryland</option>
-          <option value="massachusetts">Massachusetts</option>
-          <option value="michigan">Michigan</option>
-          <option value="minnesota">Minnesota</option>
-          <option value="mississippi">Mississippi</option>
-          <option value="missouri">Missouri</option>
-          <option value="montana">Montana</option>
-          <option value="nebraska">Nebraska</option>
-          <option value="nevada">Nevada</option>
-          <option value="new-hampshire">New Hampshire</option>
-          <option value="new-jersey">New Jersey</option>
-          <option value="new-mexico">New Mexico</option>
-          <option value="new-york">New York</option>
-          <option value="north-carolina">North Carolina</option>
-          <option value="north-dakota">North Dakota</option>
-          <option value="ohio">Ohio</option>
-          <option value="oklahoma">Oklahoma</option>
-          <option value="oregon">Oregon</option>
-          <option value="pennsylvania">Pennsylvania</option>
-          <option value="rhode-island">Rhode Island</option>
-          <option value="south-carolina">South Carolina</option>
-          <option value="south-dakota">South Dakota</option>
-          <option value="tennessee">Tennessee</option>
-          <option value="texas">Texas</option>
-          <option value="utah">Utah</option>
-          <option value="vermont">Vermont</option>
-          <option value="virginia">Virginia</option>
-          <option value="washington">Washington</option>
-          <option value="west-virginia">West Virginia</option>
-          <option value="wisconsin">Wisconsin</option>
-          <option value="wyoming">Wyoming</option>
+        <select id="state" name="state" className="input state-input">
+          <option value="choice">Choose a State</option>
+          <option value="AL">Alabama</option>
+          <option value="AK">Alaska</option>
+          <option value="AZ">Arizona</option>
+          <option value="AR">Arkansas</option>
+          <option value="CA">California</option>
+          <option value="CO">Colorado</option>
+          <option value="CT">Connecticut</option>
+          <option value="DE">Delaware</option>
+          <option value="FL">Florida</option>
+          <option value="GA">Georgia</option>
+          <option value="HI">Hawaii</option>
+          <option value="ID">Idaho</option>
+          <option value="IL">Illinois</option>
+          <option value="IN">Indiana</option>
+          <option value="IA">Iowa</option>
+          <option value="KS">Kansas</option>
+          <option value="KY">Kentucky</option>
+          <option value="LA">Louisiana</option>
+          <option value="ME">Maine</option>
+          <option value="MD">Maryland</option>
+          <option value="MA">Massachusetts</option>
+          <option value="MI">Michigan</option>
+          <option value="MN">Minnesota</option>
+          <option value="MS">Mississippi</option>
+          <option value="MO">Missouri</option>
+          <option value="MT">Montana</option>
+          <option value="NE">Nebraska</option>
+          <option value="NV">Nevada</option>
+          <option value="NH">New Hampshire</option>
+          <option value="NJ">New Jersey</option>
+          <option value="NM">New Mexico</option>
+          <option value="NY">New York</option>
+          <option value="NC">North Carolina</option>
+          <option value="ND">North Dakota</option>
+          <option value="OH">Ohio</option>
+          <option value="OK">Oklahoma</option>
+          <option value="OR">Oregon</option>
+          <option value="PA">Pennsylvania</option>
+          <option value="RI">Rhode Island</option>
+          <option value="SC">South Carolina</option>
+          <option value="SD">South Dakota</option>
+          <option value="TN">Tennessee</option>
+          <option value="TX">Texas</option>
+          <option value="UT">Utah</option>
+          <option value="VT">Vermont</option>
+          <option value="VA">Virginia</option>
+          <option value="WA">Washington</option>
+          <option value="WV">West Virginia</option>
+          <option value="WI">Wisconsin</option>
+          <option value="WY">Wyoming</option>
         </select>
 
         <div className="input-container zipcode-input">
           <input
-            className={`input zipcode-input ${errors.zipcode && "error"}`}
+            className="input zipcode-input"
             type="text"
             name="zipcode"
             placeholder="Zip Code"
-            value={inputFields.zipcode}
-            onChange={handleChange}
           />
-          {errors.zipcode && <p className="error-message">{errors.zipcode}</p>}
         </div>
 
         <div className="input-container department-input">
           <select
             id="department"
             name="department"
-            value={inputFields.department}
-            onChange={(e) => {
-              handleChange(e);
-              setSelectedOption(e.target.value);
-            }}
-            className={`input department-input ${errors.department && "error"}`}
+            className="input department-input"
           >
             <option value="choice">Choose an Option</option>
             <option value="sales">Sales</option>
@@ -254,9 +156,6 @@ export default function Form() {
             <option value="Human Resources">Human Resources</option>
             <option value="Legal">Legal</option>
           </select>
-          {errors.department && (
-            <p className="error-message">{errors.department}</p>
-          )}
         </div>
 
         <button type="submit" className="new-employee-button">

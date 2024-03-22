@@ -1,11 +1,11 @@
 import Form from "../../form/Form";
-import Header from "../../header/Header";
+import Nav from "../../nav/Nav";
 import "./homepage.css";
 
 export default function Homepage() {
   return (
     <div id="homepage">
-      <Header children="HRnet" />
+      <Nav children="HRnet" />
       <Form />
     </div>
   );
