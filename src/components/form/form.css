@@ -87,7 +87,8 @@
   width: 100%;
 }
 
-.input::placeholder {
+.input::placeholder,
+.react-datepicker__input-container > input::placeholder {
   color: var(--white);
   font-size: 20px;
 }
@@ -95,7 +96,8 @@
   color: transparent;
 }
 
-.input:focus {
+.input:focus,
+.react-datepicker__input-container > input:focus {
   border-color: var(--black);
   outline: none;
   cursor: text;
@@ -140,4 +142,11 @@
   position: absolute;
   right: 2px;
   width: 240px;
+}
+
+/* Errors */
+
+.error-message {
+  color: var(--red);
+  margin: 8px 0 0 15px;
 }
