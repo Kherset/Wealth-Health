@@ -107,6 +107,7 @@ a:visited {
 }
 body {
   line-height: 1;
+  background-color: var(--black);
 }
 ol,
 ul {
@@ -131,8 +132,8 @@ table {
 :root {
   /* Colors palette*/
   --light-green: #93ad18;
-  --medium-green: rgba(90, 110, 7, 0.6);
-  --dark-green: #9ca86a;
+  --medium-green: #9ca86a;
+  --dark-green: rgb(116, 126, 79);
   --white: #fcfafa;
   --black: #453f3b;
   --red: #ad1328;
