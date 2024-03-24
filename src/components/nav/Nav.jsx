@@ -4,9 +4,9 @@ import "./nav.css";
 
 export default function Nav({ children }) {
   return (
-    <header className="nav">
+    <nav className="nav">
       <Title />
       <EmployeesList />
-    </header>
+    </nav>
   );
 }
