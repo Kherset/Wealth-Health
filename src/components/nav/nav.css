@@ -1,0 +1,47 @@
+.nav {
+  background-color: var(--black);
+  height: 100vh;
+  min-width: 345px;
+  position: relative;
+  width: 40%;
+}
+.hrnet-title-and-subtitle {
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  left: 5%;
+  margin: 0 auto;
+  width: 320px;
+  position: absolute;
+  top: 35%;
+}
+.hrnet-title {
+  font-size: 5em;
+}
+.hrnet-subtitle {
+  color: var(--medium-green);
+  font-size: 1em;
+  right: 0;
+  position: absolute;
+  top: 5em;
+}
+.header-link {
+  align-items: center;
+  bottom: 5%;
+  color: var(--white);
+  display: flex;
+  position: absolute;
+  right: 5%;
+}
+.header-link:hover {
+  color: var(--medium-green);
+}
+.header-link-icon {
+  font-size: 1.5em;
+}
+.header-link-to-employees-list {
+  cursor: pointer;
+  margin-left: 10px;
+  text-decoration: none;
+}
