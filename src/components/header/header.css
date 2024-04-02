@@ -1,0 +1,17 @@
+@import url("../../App.css");
+.header {
+  background-color: var(--medium-green);
+  color: var(--white);
+  display: flex;
+  padding: 50px;
+}
+.link-to-homepage {
+  flex: 1;
+  font-size: 3rem;
+}
+.datas-table-title {
+  color: var(--black);
+  flex: 18;
+  font-size: 3rem;
+  text-align: center;
+}
