@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/employees-list",
+    path: "/Wealth-Health/employees-list",
     element: <EmployeesList />,
   },
   {

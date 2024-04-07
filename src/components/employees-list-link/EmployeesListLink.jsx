@@ -6,7 +6,10 @@ export default function EmployeesListLink({ children }) {
   return (
     <div className="header-link">
       <FontAwesomeIcon icon={faUsers} className="header-link-icon" />
-      <Link to="/employees-list" className="header-link-to-employees-list">
+      <Link
+        to="/Wealth-Health/employees-list"
+        className="header-link-to-employees-list"
+      >
         Current Employees
       </Link>
     </div>
