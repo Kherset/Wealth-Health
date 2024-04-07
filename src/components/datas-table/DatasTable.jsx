@@ -4,14 +4,16 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useSelector } from "react-redux";
-// Ligne de donnees Mock pour soutenance
-// import { allData } from "../../app/datasMock";
+import { allData } from "../../app/datasMock";
 
 export default function DatasTables() {
   const pagination = true;
   const paginationPageSize = 10;
   const paginationPageSizeSelector = [10, 20, 50, 100];
   const employees = useSelector((state) => state.employee.employees);
+
+  const useMockData = process.env.REACT_APP_USE_MOCK_DATA === "true";
+  const dataToUse = useMockData ? allData : employees;
 
   const colDefs = [
     {
@@ -79,14 +81,11 @@ export default function DatasTables() {
     },
   ];
 
-  // Ligne de donnees Mock pour soutenance
-  // const [rowData, setRowData] = useState(allData);
-  const [rowData, setRowData] = useState(employees);
+  const [rowData, setRowData] = useState(dataToUse);
 
   const filterData = (event) => {
     const searchText = event.target.value.toLowerCase();
-    // !!! Changer allData par employees selon le besoin pour la soutenance !!!
-    const filteredData = employees.filter((row) => {
+    const filteredData = dataToUse.filter((row) => {
       return Object.values(row).some(
         (value) => value.toString().toLowerCase().indexOf(searchText) > -1
       );

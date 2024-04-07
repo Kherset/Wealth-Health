@@ -9,7 +9,7 @@ import ErrorPage from "./components/pages/error-page/ErrorPage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/Wealth-Health",
     element: <App />,
   },
   {
