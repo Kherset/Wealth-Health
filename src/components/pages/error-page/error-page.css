@@ -1,0 +1,26 @@
+.error-page-message {
+  align-items: center;
+  color: var(--medium-green);
+  display: flex;
+  justify-content: space-around;
+  height: 40vh;
+  flex-direction: column;
+  margin: 30vh;
+}
+
+.error-page-title {
+  font-size: 9rem;
+}
+
+.error-page-text {
+  font-size: 3rem;
+}
+
+.error-page-link {
+  font-size: 2rem;
+  text-decoration: underline !important;
+}
+
+.error-page-link:hover {
+  color: var(--dark-green);
+}
