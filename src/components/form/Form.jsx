@@ -22,16 +22,23 @@ export default function Form() {
     zipcode: "",
     department: "",
   });
+  const [errors, setErrors] = useState({
+    firstname: "",
+    lastname: "",
+    zipcode: "",
+  });
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSubmitting(true);
-    dispatch(createNewEmployee(formData));
-    // Small delay added to allow the component to load properly.
-    setTimeout(() => {
-      setShowModal(true);
-    }, 1);
+    if (validateForm()) {
+      setSubmitting(true);
+      dispatch(createNewEmployee(formData));
+      // Small delay added to allow the component to load properly.
+      setTimeout(() => {
+        setShowModal(true);
+      }, 1);
+    }
   };
 
   useEffect(() => {
@@ -53,6 +60,32 @@ export default function Form() {
       ...formData,
       [fieldName]: value,
     });
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    // firstname's validation
+    if (!/^[a-zA-ZÀ-ÿ-]+(?:\s[a-zA-ZÀ-ÿ-]+)*$/.test(formData.firstname)) {
+      newErrors.firstname = "Firstname is not valid";
+      isValid = false;
+    }
+
+    // lastname's validation
+    if (!/^[a-zA-ZÀ-ÿ-]+(?:\s[a-zA-ZÀ-ÿ-]+)*$/.test(formData.lastname)) {
+      newErrors.lastname = "Lastname is not valid";
+      isValid = false;
+    }
+
+    // zipcode's validation
+    if (!/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(formData.zipcode)) {
+      newErrors.zipcode = "Zipcode must be in the format ##### or #####-####";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const stateOptions = [
@@ -134,13 +167,11 @@ export default function Form() {
             type="text"
             name="firstname"
             placeholder="First Name"
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                firstname: e.target.value,
-              })
-            }
+            onChange={(e) => handleInputChange("firstname", e.target.value)}
           />
+          {errors.firstname && (
+            <div className="error-message">{errors.firstname}</div>
+          )}
         </div>
 
         <div className="input-container">
@@ -149,13 +180,11 @@ export default function Form() {
             type="text"
             name="lastname"
             placeholder="Last Name"
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                lastname: e.target.value,
-              })
-            }
+            onChange={(e) => handleInputChange("lastname", e.target.value)}
           />
+          {errors.lastname && (
+            <div className="error-message">{errors.lastname}</div>
+          )}
         </div>
 
         <div className="birthdate-input">
@@ -219,13 +248,11 @@ export default function Form() {
             type="text"
             name="zipcode"
             placeholder="Zip Code"
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                zipcode: e.target.value,
-              })
-            }
+            onChange={(e) => handleInputChange("zipcode", e.target.value)}
           />
+          {errors.zipcode && (
+            <div className="error-message">{errors.zipcode}</div>
+          )}
         </div>
 
         <div className="input-container department-input">
